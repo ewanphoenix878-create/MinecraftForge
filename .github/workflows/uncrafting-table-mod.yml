@@ -1,0 +1,30 @@
+name: Build Uncrafting Table mod
+
+on:
+  push:
+    paths:
+      - 'uncrafting-table-mod/**'
+      - '.github/workflows/uncrafting-table-mod.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: uncrafting-table-mod
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v4
+      - run: chmod +x gradlew && ./gradlew build --stacktrace
+      - uses: actions/upload-artifact@v4
+        with:
+          name: uncraftingtable-1.20.1
+          path: uncrafting-table-mod/build/libs/*.jar

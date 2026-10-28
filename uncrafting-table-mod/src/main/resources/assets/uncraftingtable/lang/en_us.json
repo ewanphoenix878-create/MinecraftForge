@@ -1,0 +1,8 @@
+{
+  "block.uncraftingtable.uncrafting_table": "Uncrafting Table",
+  "container.uncraftingtable.uncrafting_table": "Uncrafting Table",
+  "gui.uncraftingtable.uncraft": "Uncraft",
+  "gui.uncraftingtable.uncraft.tooltip": "Turn the item back into its ingredients. Shift-click to uncraft the whole stack.",
+  "gui.uncraftingtable.no_recipe": "No recipe",
+  "gui.uncraftingtable.need": "Need %s"
+}
