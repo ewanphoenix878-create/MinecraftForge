@@ -1,0 +1,26 @@
+name: Build Jetson mod (1.20.1)
+
+on:
+  push:
+    paths:
+      - 'jetson-mod-1.20.1/**'
+      - '.github/workflows/build-jetson-mod-1.20.1.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: jetson-mod-1.20.1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - run: chmod +x gradlew && ./gradlew build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jetsonmod-1.20.1
+          path: jetson-mod-1.20.1/build/libs/*.jar
