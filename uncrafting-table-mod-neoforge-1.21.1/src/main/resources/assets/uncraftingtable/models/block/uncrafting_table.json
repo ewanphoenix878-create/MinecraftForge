@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "uncraftingtable:block/uncrafting_table_front",
+    "down": "minecraft:block/iron_block",
+    "up": "uncraftingtable:block/uncrafting_table_top",
+    "north": "uncraftingtable:block/uncrafting_table_front",
+    "south": "uncraftingtable:block/uncrafting_table_front",
+    "east": "uncraftingtable:block/uncrafting_table_side",
+    "west": "uncraftingtable:block/uncrafting_table_side"
+  }
+}

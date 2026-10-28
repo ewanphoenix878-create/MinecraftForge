@@ -1,0 +1,27 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="MIT"
+
+[[mods]]
+modId="uncraftingtable"
+version="1.0.0"
+displayName="Uncrafting Table"
+authors="ewanphoenix878"
+description='''
+Adds an Uncrafting Table that turns crafted items back into their ingredients.
+Craft it with a Crafting Table surrounded by 8 Iron Ingots.
+'''
+
+[[dependencies.uncraftingtable]]
+    modId="neoforge"
+    type="required"
+    versionRange="[21.1.0,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.uncraftingtable]]
+    modId="minecraft"
+    type="required"
+    versionRange="[1.21.1,1.21.2)"
+    ordering="NONE"
+    side="BOTH"
