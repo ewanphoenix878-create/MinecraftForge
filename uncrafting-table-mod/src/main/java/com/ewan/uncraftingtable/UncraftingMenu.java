@@ -111,7 +111,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
 
     public static List<CraftingRecipe> findRecipes(Level level, ItemStack stack) {
         List<CraftingRecipe> found = new ArrayList<>();
-        if (stack.isEmpty() || stack.isDamaged()) {
+        if (stack.isEmpty()) {
             return found;
         }
         for (CraftingRecipe recipe : level.getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING)) {
@@ -174,6 +174,14 @@ public class UncraftingMenu extends AbstractContainerMenu {
         return grid;
     }
 
+    /** The chance (0 to 1) of getting each ingredient back: the fraction of durability the item has left. */
+    public static float getReturnChance(ItemStack stack) {
+        if (!stack.isDamageableItem() || stack.getMaxDamage() <= 0) {
+            return 1.0F;
+        }
+        return (float) (stack.getMaxDamage() - stack.getDamageValue()) / stack.getMaxDamage();
+    }
+
     /** How many of the input item one uncraft of the recipe consumes. */
     public int getRequiredCount(CraftingRecipe recipe) {
         return recipe.getResultItem(player.level().registryAccess()).getCount();
@@ -218,8 +226,10 @@ public class UncraftingMenu extends AbstractContainerMenu {
                 return false;
             }
         }
+        // Each ingredient is rolled separately, so a half-worn pickaxe might give back the diamond but only one stick.
+        float chance = getReturnChance(stack);
         for (int i = 0; i < 9; i++) {
-            if (grid[i].isEmpty()) {
+            if (grid[i].isEmpty() || (chance < 1.0F && player.getRandom().nextFloat() >= chance)) {
                 continue;
             }
             ItemStack existing = results.getItem(i);

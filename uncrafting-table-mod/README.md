@@ -23,7 +23,11 @@ I I I
 
 Notes:
 - Items that craft in batches need the full batch (e.g. 4 sticks to get back 2 planks).
-- Damaged tools/armour can't be uncrafted. Enchantments are lost.
+- Damaged tools/armour can be uncrafted, but each ingredient only has a chance to come back equal to the
+  durability left. A diamond pickaxe at 50% durability gives a 50% chance for the diamond, and a separate
+  50% chance for each stick, so you might get the diamond and one stick, both sticks, everything or nothing.
+  The table shows the chance (e.g. "50% each") when a damaged item is in the slot.
+- Enchantments are lost.
 - Ingredients that accept several items (like "any planks") come back as the first option (e.g. oak planks).
 
 ## Installing

@@ -103,6 +103,11 @@ public class UncraftingScreen extends AbstractContainerScreen<UncraftingMenu> {
             return;
         }
         List<CraftingRecipe> recipes = menu.getRecipes();
+        float chance = UncraftingMenu.getReturnChance(input);
+        if (!recipes.isEmpty() && chance < 1.0F) {
+            Component chanceText = Component.translatable("gui.uncraftingtable.chance", Math.round(chance * 100));
+            graphics.drawString(font, chanceText, 65 - font.width(chanceText) / 2, 22, 0x404040, false);
+        }
         Component status;
         int color;
         if (recipes.isEmpty()) {
