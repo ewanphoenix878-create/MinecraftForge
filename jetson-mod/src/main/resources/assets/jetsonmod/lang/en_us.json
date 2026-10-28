@@ -1,0 +1,8 @@
+{
+  "item.jetsonmod.jetson": "Jetson Aircraft",
+  "entity.jetsonmod.jetson": "Jetson Aircraft",
+  "container.jetsonmod.jetson": "Jetson Fuel Tank",
+  "hud.jetsonmod.fuel": "Fuel: %s",
+  "hud.jetsonmod.empty": "OUT OF FUEL",
+  "hud.jetsonmod.exit": "Land and press Shift to exit"
+}

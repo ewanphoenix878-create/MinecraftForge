@@ -1,0 +1,34 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "MIT"
+
+[[mods]]
+modId = "jetsonmod"
+version = "1.0.0"
+displayName = "Jetson Personal Aircraft"
+description = '''
+A Jetson-style personal eVTOL. Fuel it with coal (or any furnace fuel),
+Space to climb, Shift to descend, WASD to fly. Land and press Shift to get out.
+'''
+
+[[dependencies.jetsonmod]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.jetsonmod]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1,1.21.2)"
+ordering = "NONE"
+side = "BOTH"
+
+# Create supplies the propellers for the crafting recipe.
+[[dependencies.jetsonmod]]
+modId = "create"
+type = "optional"
+versionRange = "*"
+ordering = "AFTER"
+side = "BOTH"
