@@ -25,6 +25,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeHooks;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -100,7 +101,7 @@ public class JetsonEntity extends Entity implements HasCustomInventoryScreen {
     }
 
     public static boolean isFuel(ItemStack stack) {
-        return stack.getBurnTime(RecipeType.SMELTING) > 0;
+        return ForgeHooks.getBurnTime(stack, RecipeType.SMELTING) > 0;
     }
 
     public int getBurnTime() {
@@ -182,7 +183,7 @@ public class JetsonEntity extends Entity implements HasCustomInventoryScreen {
         }
         if (getBurnTime() <= 0) {
             ItemStack stack = fuelContainer.getItem(0);
-            int value = stack.isEmpty() ? 0 : stack.getBurnTime(RecipeType.SMELTING);
+            int value = stack.isEmpty() ? 0 : ForgeHooks.getBurnTime(stack, RecipeType.SMELTING);
             if (value > 0) {
                 ItemStack remainder = stack.getCraftingRemainingItem();
                 stack.shrink(1);

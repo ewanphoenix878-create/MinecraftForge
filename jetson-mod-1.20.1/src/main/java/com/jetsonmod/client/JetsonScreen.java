@@ -8,6 +8,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraftforge.common.ForgeHooks;
 
 /** Fuel tank UI, drawn with plain fills so it needs no GUI texture. */
 public class JetsonScreen extends AbstractContainerScreen<JetsonMenu> {
@@ -80,7 +81,7 @@ public class JetsonScreen extends AbstractContainerScreen<JetsonMenu> {
     protected void renderLabels(GuiGraphics g, int mouseX, int mouseY) {
         super.renderLabels(g, mouseX, mouseY);
         ItemStack reserve = menu.getSlot(0).getItem();
-        int perItem = reserve.isEmpty() ? 0 : reserve.getBurnTime(RecipeType.SMELTING);
+        int perItem = reserve.isEmpty() ? 0 : ForgeHooks.getBurnTime(reserve, RecipeType.SMELTING);
         int totalSeconds = (menu.getBurnTime() + perItem * reserve.getCount()) / 20;
         Component text = Component.literal("Flight time: " + (totalSeconds / 60) + "m " + (totalSeconds % 60) + "s");
         g.drawString(font, text, (imageWidth - font.width(text)) / 2, GAUGE_Y + GAUGE_H + 4, 0x404040, false);
