@@ -30,6 +30,8 @@ Notes:
   50% chance for each stick, so you might get the diamond and one stick, both sticks, everything or nothing.
   The table shows the chance (e.g. "50% each") when a damaged item is in the slot.
 - Enchantments and armour trims are lost.
+- Saddles have no crafting recipe, so the table has its own reverse-only one: a saddle gives back 3 leather
+  and 1 iron ingot. This doesn't make saddles craftable.
 - Ingredients that accept several items (like "any planks") come back as the first option (e.g. oak planks).
 
 ## Installing

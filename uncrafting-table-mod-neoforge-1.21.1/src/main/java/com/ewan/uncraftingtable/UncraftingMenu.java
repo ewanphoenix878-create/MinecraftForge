@@ -12,6 +12,7 @@ import java.util.Set;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,11 +22,14 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.level.Level;
 
 public class UncraftingMenu extends AbstractContainerMenu {
@@ -122,6 +126,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
             return found;
         }
         List<RecipeHolder<CraftingRecipe>> holders = new ArrayList<>(level.getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING));
+        holders.addAll(extraRecipes());
         holders.sort(Comparator.comparing(holder -> holder.id().toString()));
         for (RecipeHolder<CraftingRecipe> holder : holders) {
             CraftingRecipe recipe = holder.value();
@@ -151,6 +156,19 @@ public class UncraftingMenu extends AbstractContainerMenu {
             }
         }
         return components;
+    }
+
+    /** Reverse-only recipes for items with no crafting recipe of their own. They don't make these items craftable. */
+    private static List<RecipeHolder<CraftingRecipe>> extraRecipes() {
+        return List.of(
+                shaped("saddle", new ItemStack(Items.SADDLE),
+                        Map.of('L', Ingredient.of(Items.LEATHER), 'I', Ingredient.of(Items.IRON_INGOT)),
+                        " L ", "LIL"));
+    }
+
+    private static RecipeHolder<CraftingRecipe> shaped(String name, ItemStack result, Map<Character, Ingredient> key, String... pattern) {
+        return new RecipeHolder<>(ResourceLocation.fromNamespaceAndPath(UncraftingTableMod.MOD_ID, "uncrafting/" + name),
+                new ShapedRecipe("", CraftingBookCategory.MISC, ShapedRecipePattern.of(key, pattern), result));
     }
 
     private static boolean hasUsableIngredients(NonNullList<Ingredient> ingredients) {

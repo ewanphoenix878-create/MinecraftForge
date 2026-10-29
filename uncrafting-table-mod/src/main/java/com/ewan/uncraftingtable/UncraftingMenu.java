@@ -8,6 +8,7 @@ import java.util.Set;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -17,9 +18,12 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.DataSlot;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.IShapedRecipe;
 
@@ -114,7 +118,9 @@ public class UncraftingMenu extends AbstractContainerMenu {
         if (stack.isEmpty()) {
             return found;
         }
-        for (CraftingRecipe recipe : level.getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING)) {
+        List<CraftingRecipe> candidates = new ArrayList<>(level.getRecipeManager().getAllRecipesFor(RecipeType.CRAFTING));
+        candidates.addAll(extraRecipes());
+        for (CraftingRecipe recipe : candidates) {
             if (recipe.isSpecial()) {
                 continue;
             }
@@ -139,6 +145,20 @@ public class UncraftingMenu extends AbstractContainerMenu {
         CompoundTag tag = stack.getTag() == null ? new CompoundTag() : stack.getTag().copy();
         IGNORED_TAGS.forEach(tag::remove);
         return tag;
+    }
+
+    /** Reverse-only recipes for items with no crafting recipe of their own. They don't make these items craftable. */
+    private static List<CraftingRecipe> extraRecipes() {
+        Ingredient leather = Ingredient.of(Items.LEATHER);
+        return List.of(
+                shaped("saddle", new ItemStack(Items.SADDLE), 3, 2,
+                        Ingredient.EMPTY, leather, Ingredient.EMPTY,
+                        leather, Ingredient.of(Items.IRON_INGOT), leather));
+    }
+
+    private static CraftingRecipe shaped(String name, ItemStack result, int width, int height, Ingredient... ingredients) {
+        return new ShapedRecipe(new ResourceLocation(UncraftingTableMod.MOD_ID, "uncrafting/" + name), "",
+                CraftingBookCategory.MISC, width, height, NonNullList.of(Ingredient.EMPTY, ingredients), result);
     }
 
     private static boolean hasUsableIngredients(NonNullList<Ingredient> ingredients) {
