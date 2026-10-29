@@ -35,7 +35,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
     private static final int INV_END = 46;
 
     // Tag keys that don't affect what an item was crafted from, so they're allowed on items being uncrafted.
-    private static final Set<String> IGNORED_TAGS = Set.of("Damage", "Enchantments", "RepairCost", "display");
+    private static final Set<String> IGNORED_TAGS = Set.of("Damage", "Enchantments", "RepairCost", "display", "Trim");
 
     private final ContainerLevelAccess access;
     private final Player player;
@@ -130,15 +130,15 @@ public class UncraftingMenu extends AbstractContainerMenu {
         return found;
     }
 
+    // Both sides are stripped: damageable items always carry a Damage tag, even straight out of a recipe.
     private static boolean tagsMatch(ItemStack stack, ItemStack result) {
-        CompoundTag tag = stack.getTag();
-        if (tag == null) {
-            return !result.hasTag();
-        }
-        CompoundTag stripped = tag.copy();
-        IGNORED_TAGS.forEach(stripped::remove);
-        CompoundTag resultTag = result.getTag();
-        return stripped.isEmpty() ? resultTag == null || resultTag.isEmpty() : stripped.equals(resultTag);
+        return strippedTag(stack).equals(strippedTag(result));
+    }
+
+    private static CompoundTag strippedTag(ItemStack stack) {
+        CompoundTag tag = stack.getTag() == null ? new CompoundTag() : stack.getTag().copy();
+        IGNORED_TAGS.forEach(tag::remove);
+        return tag;
     }
 
     private static boolean hasUsableIngredients(NonNullList<Ingredient> ingredients) {

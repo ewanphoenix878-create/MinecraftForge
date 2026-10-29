@@ -42,7 +42,7 @@ public class UncraftingMenu extends AbstractContainerMenu {
     // Components that don't affect what an item was crafted from, so they're allowed on items being uncrafted.
     private static final Set<DataComponentType<?>> IGNORED_COMPONENTS = Set.of(
             DataComponents.DAMAGE, DataComponents.ENCHANTMENTS, DataComponents.REPAIR_COST,
-            DataComponents.CUSTOM_NAME, DataComponents.LORE);
+            DataComponents.CUSTOM_NAME, DataComponents.LORE, DataComponents.TRIM);
 
     private final ContainerLevelAccess access;
     private final Player player;

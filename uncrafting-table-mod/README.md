@@ -27,7 +27,7 @@ Notes:
   durability left. A diamond pickaxe at 50% durability gives a 50% chance for the diamond, and a separate
   50% chance for each stick, so you might get the diamond and one stick, both sticks, everything or nothing.
   The table shows the chance (e.g. "50% each") when a damaged item is in the slot.
-- Enchantments are lost.
+- Enchantments and armour trims are lost.
 - Ingredients that accept several items (like "any planks") come back as the first option (e.g. oak planks).
 
 ## Installing
