@@ -68,6 +68,9 @@ public class JetsonEntity extends Entity implements HasCustomInventoryScreen {
     // Input from the controlling client
     private boolean inputForward, inputBack, inputLeft, inputRight, inputUp, inputDown;
 
+    // Set while the pilot is being let out with the exit key, so the dismount isn't blocked
+    private boolean exitRequested;
+
     // Client-side interpolation for entities we do not control
     private int lerpSteps;
     private double lerpX, lerpY, lerpZ, lerpYRot;
@@ -319,6 +322,22 @@ public class JetsonEntity extends Entity implements HasCustomInventoryScreen {
         player.openMenu(new SimpleMenuProvider(
                 (id, inventory, p) -> new JetsonMenu(id, inventory, fuelContainer, dataAccess, this),
                 Component.translatable("container.jetsonmod.jetson")));
+    }
+
+    public boolean isExitRequested() {
+        return exitRequested;
+    }
+
+    /** Server side: let the pilot out if the aircraft has landed. */
+    public static void handleExitRequest(Player player) {
+        if (player.getVehicle() instanceof JetsonEntity jetson && jetson.isLanded()) {
+            jetson.exitRequested = true;
+            try {
+                player.stopRiding();
+            } finally {
+                jetson.exitRequested = false;
+            }
+        }
     }
 
     /** True when the aircraft is resting on (or right above) something solid, so the pilot may climb out. */

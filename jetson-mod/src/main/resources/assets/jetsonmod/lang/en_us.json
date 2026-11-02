@@ -4,5 +4,8 @@
   "container.jetsonmod.jetson": "Jetson Fuel Tank",
   "hud.jetsonmod.fuel": "Fuel: %s",
   "hud.jetsonmod.empty": "OUT OF FUEL",
-  "hud.jetsonmod.exit": "Land and press Shift to exit"
+  "hud.jetsonmod.exit": "Land and press %s to exit",
+  "hud.jetsonmod.land_first": "Land first to get out",
+  "key.jetsonmod.exit": "Exit flying toilet",
+  "key.categories.jetsonmod": "Jetson Aircraft"
 }

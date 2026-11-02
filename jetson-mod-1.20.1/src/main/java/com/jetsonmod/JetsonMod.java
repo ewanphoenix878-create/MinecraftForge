@@ -24,7 +24,7 @@ public class JetsonMod {
 
     public static final RegistryObject<EntityType<JetsonEntity>> JETSON_ENTITY = ENTITY_TYPES.register("jetson",
             () -> EntityType.Builder.<JetsonEntity>of(JetsonEntity::new, MobCategory.MISC)
-                    .sized(2.2F, 1.3F)
+                    .sized(1.2F, 1.6F)
                     .clientTrackingRange(10)
                     .build("jetson"));
 
@@ -40,6 +40,7 @@ public class JetsonMod {
         ENTITY_TYPES.register(modBus);
         MENUS.register(modBus);
         modBus.addListener(this::addCreative);
+        JetsonNetwork.register();
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {

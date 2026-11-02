@@ -8,7 +8,7 @@ version = "1.0.0"
 displayName = "Jetson Personal Aircraft"
 description = '''
 A Jetson-style personal eVTOL. Fuel it with coal (or any furnace fuel),
-Space to climb, Shift to descend, WASD to fly. Land and press Shift to get out.
+Space to climb, Shift to descend, WASD to fly. Land and press R to get out.
 '''
 
 [[dependencies.jetsonmod]]

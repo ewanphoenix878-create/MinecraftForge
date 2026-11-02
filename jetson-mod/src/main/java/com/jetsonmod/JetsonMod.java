@@ -10,6 +10,7 @@ import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -24,8 +25,8 @@ public class JetsonMod {
 
     public static final DeferredHolder<EntityType<?>, EntityType<JetsonEntity>> JETSON_ENTITY = ENTITY_TYPES.register("jetson",
             () -> EntityType.Builder.<JetsonEntity>of(JetsonEntity::new, MobCategory.MISC)
-                    .sized(2.2F, 1.3F)
-                    .passengerAttachments(0.75F)
+                    .sized(1.2F, 1.6F)
+                    .passengerAttachments(0.6F)
                     .clientTrackingRange(10)
                     .build("jetson"));
 
@@ -40,6 +41,11 @@ public class JetsonMod {
         ENTITY_TYPES.register(modBus);
         MENUS.register(modBus);
         modBus.addListener(this::addCreative);
+        modBus.addListener(this::registerPayloads);
+    }
+
+    private void registerPayloads(RegisterPayloadHandlersEvent event) {
+        event.registrar("1").playToServer(ExitPayload.TYPE, ExitPayload.STREAM_CODEC, ExitPayload::handle);
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {

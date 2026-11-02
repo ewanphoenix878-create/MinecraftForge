@@ -20,7 +20,7 @@ public class JetsonRenderer extends EntityRenderer<JetsonEntity> {
 
     public JetsonRenderer(EntityRendererProvider.Context context) {
         super(context);
-        this.shadowRadius = 1.1F;
+        this.shadowRadius = 0.7F;
         this.model = new JetsonModel(context.bakeLayer(JetsonModel.LAYER));
     }
 

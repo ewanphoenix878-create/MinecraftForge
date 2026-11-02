@@ -15,95 +15,50 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 
-/** Single-seat eVTOL: tub hull, roll cage, skids and four rotors on outrigger arms. */
+/** Flying toilet: a gadget-style telescoping mast rises out of the cistern with a rotor on top. */
 public class JetsonModel extends EntityModel<JetsonEntity> {
     public static final ModelLayerLocation LAYER =
             new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(JetsonMod.MODID, "jetson"), "main");
 
     private final ModelPart root;
-    private final ModelPart propFL, propFR, propRL, propRR;
+    private final ModelPart rotor;
 
     public JetsonModel(ModelPart root) {
         this.root = root;
-        this.propFL = root.getChild("prop_fl");
-        this.propFR = root.getChild("prop_fr");
-        this.propRL = root.getChild("prop_rl");
-        this.propRR = root.getChild("prop_rr");
+        this.rotor = root.getChild("rotor");
     }
 
     public static LayerDefinition createBodyLayer() {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition root = mesh.getRoot();
-        root.addOrReplaceChild("hull", CubeListBuilder.create()
-                .texOffs(0, 0).addBox(-6F, 14F, -10F, 12F, 6F, 20F)
-                .texOffs(64, 0).addBox(-5F, 15F, -14F, 10F, 4F, 4F)
-                .texOffs(0, 26).addBox(-5F, 20F, -9F, 10F, 1F, 18F)
-                .texOffs(56, 26).addBox(-4F, 13F, -3F, 8F, 1F, 9F)
-                .texOffs(90, 26).addBox(-5F, 4F, 6F, 10F, 10F, 2F)
-                .texOffs(0, 45).addBox(-6F, 13F, -10F, 12F, 1F, 3F),
+        root.addOrReplaceChild("toilet", CubeListBuilder.create()
+                .texOffs(0, 0).addBox(-4F, 16F, -7F, 8F, 8F, 16F)
+                .texOffs(48, 0).addBox(-6F, 13F, -11F, 12F, 3F, 15F)
+                .texOffs(0, 24).addBox(-6F, 12F, -11F, 12F, 1F, 2F)
+                .texOffs(28, 24).addBox(-6F, 12F, -9F, 2F, 1F, 13F)
+                .texOffs(28, 24).addBox(4F, 12F, -9F, 2F, 1F, 13F)
+                .texOffs(58, 24).addBox(-6F, 1F, 4F, 12F, 11F, 1F)
+                .texOffs(84, 24).addBox(-4F, 13F, 5F, 8F, 3F, 4F)
+                .texOffs(0, 38).addBox(-7F, 0F, 5F, 14F, 13F, 6F)
+                .texOffs(40, 38).addBox(-8F, -1F, 4F, 16F, 1F, 8F)
+                .texOffs(88, 38).addBox(-8F, 2F, 6F, 1F, 1F, 3F),
                 PartPose.offset(0F, 0F, 0F));
-        root.addOrReplaceChild("cage", CubeListBuilder.create()
-                .texOffs(30, 45).addBox(-7F, 4F, -8F, 1F, 1F, 16F)
-                .texOffs(30, 45).addBox(6F, 4F, -8F, 1F, 1F, 16F)
-                .texOffs(64, 45).addBox(-7F, 5F, -8F, 1F, 10F, 1F)
-                .texOffs(64, 45).addBox(6F, 5F, -8F, 1F, 10F, 1F)
-                .texOffs(68, 45).addBox(-7F, 3F, -8F, 14F, 1F, 1F)
-                .texOffs(68, 45).addBox(-7F, 3F, 7F, 14F, 1F, 1F),
+        root.addOrReplaceChild("mast", CubeListBuilder.create()
+                .texOffs(96, 38).addBox(-2F, -8F, 6F, 4F, 7F, 4F)
+                .texOffs(112, 38).addBox(-1F, -18F, 7F, 2F, 10F, 2F)
+                .texOffs(0, 57).addBox(-2F, -9F, 6F, 4F, 1F, 4F),
                 PartPose.offset(0F, 0F, 0F));
-        root.addOrReplaceChild("skids", CubeListBuilder.create()
-                .texOffs(0, 62).addBox(-7F, 22F, -10F, 1F, 2F, 20F)
-                .texOffs(0, 62).addBox(6F, 22F, -10F, 1F, 2F, 20F)
-                .texOffs(42, 62).addBox(-7F, 20F, -6F, 1F, 2F, 1F)
-                .texOffs(42, 62).addBox(6F, 20F, -6F, 1F, 2F, 1F)
-                .texOffs(42, 62).addBox(-7F, 20F, 5F, 1F, 2F, 1F)
-                .texOffs(42, 62).addBox(6F, 20F, 5F, 1F, 2F, 1F),
-                PartPose.offset(0F, 0F, 0F));
-        root.addOrReplaceChild("arms", CubeListBuilder.create()
-                .texOffs(46, 62).addBox(-17F, 15F, -9F, 34F, 1F, 2F)
-                .texOffs(46, 62).addBox(-17F, 15F, 7F, 34F, 1F, 2F),
-                PartPose.offset(0F, 0F, 0F));
-        root.addOrReplaceChild("motor_fl", CubeListBuilder.create()
-                .texOffs(0, 84).addBox(-2F, -3F, -2F, 4F, 4F, 4F),
-                PartPose.offset(16F, 15F, -8F));
-        root.addOrReplaceChild("prop_fl", CubeListBuilder.create()
-                .texOffs(16, 84).addBox(-7F, 0F, -1F, 14F, 1F, 2F)
-                .texOffs(48, 84).addBox(-1F, 0F, -7F, 2F, 1F, 14F)
-                .texOffs(80, 84).addBox(-1F, -1F, -1F, 2F, 1F, 2F),
-                PartPose.offset(16F, 11.5F, -8F));
-        root.addOrReplaceChild("motor_fr", CubeListBuilder.create()
-                .texOffs(0, 84).addBox(-2F, -3F, -2F, 4F, 4F, 4F),
-                PartPose.offset(-16F, 15F, -8F));
-        root.addOrReplaceChild("prop_fr", CubeListBuilder.create()
-                .texOffs(16, 84).addBox(-7F, 0F, -1F, 14F, 1F, 2F)
-                .texOffs(48, 84).addBox(-1F, 0F, -7F, 2F, 1F, 14F)
-                .texOffs(80, 84).addBox(-1F, -1F, -1F, 2F, 1F, 2F),
-                PartPose.offset(-16F, 11.5F, -8F));
-        root.addOrReplaceChild("motor_rl", CubeListBuilder.create()
-                .texOffs(0, 84).addBox(-2F, -3F, -2F, 4F, 4F, 4F),
-                PartPose.offset(16F, 15F, 8F));
-        root.addOrReplaceChild("prop_rl", CubeListBuilder.create()
-                .texOffs(16, 84).addBox(-7F, 0F, -1F, 14F, 1F, 2F)
-                .texOffs(48, 84).addBox(-1F, 0F, -7F, 2F, 1F, 14F)
-                .texOffs(80, 84).addBox(-1F, -1F, -1F, 2F, 1F, 2F),
-                PartPose.offset(16F, 11.5F, 8F));
-        root.addOrReplaceChild("motor_rr", CubeListBuilder.create()
-                .texOffs(0, 84).addBox(-2F, -3F, -2F, 4F, 4F, 4F),
-                PartPose.offset(-16F, 15F, 8F));
-        root.addOrReplaceChild("prop_rr", CubeListBuilder.create()
-                .texOffs(16, 84).addBox(-7F, 0F, -1F, 14F, 1F, 2F)
-                .texOffs(48, 84).addBox(-1F, 0F, -7F, 2F, 1F, 14F)
-                .texOffs(80, 84).addBox(-1F, -1F, -1F, 2F, 1F, 2F),
-                PartPose.offset(-16F, 11.5F, 8F));
+        root.addOrReplaceChild("rotor", CubeListBuilder.create()
+                .texOffs(16, 57).addBox(-2F, -2F, -2F, 4F, 2F, 4F)
+                .texOffs(32, 57).addBox(-22F, -2F, -1F, 44F, 1F, 2F)
+                .texOffs(0, 63).addBox(-1F, -3F, -1F, 2F, 1F, 2F),
+                PartPose.offset(0F, -18F, 8F));
+
         return LayerDefinition.create(mesh, 128, 128);
     }
 
-    /** Spin the rotors; diagonal pairs turn in opposite directions like a real quad. */
     public void prepare(JetsonEntity entity, float partialTick) {
-        float angle = entity.getPropAngle(partialTick) * Mth.DEG_TO_RAD;
-        propFL.yRot = angle;
-        propRR.yRot = angle;
-        propFR.yRot = -angle;
-        propRL.yRot = -angle;
+        rotor.yRot = entity.getPropAngle(partialTick) * Mth.DEG_TO_RAD;
     }
 
     @Override

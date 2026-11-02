@@ -1,9 +1,13 @@
 package com.jetsonmod.client;
 
+import com.jetsonmod.ExitPayload;
 import com.jetsonmod.JetsonEntity;
 import com.jetsonmod.JetsonMod;
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -11,13 +15,22 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class ClientEvents {
+    public static final KeyMapping EXIT_KEY =
+            new KeyMapping("key.jetsonmod.exit", InputConstants.KEY_R, "key.categories.jetsonmod");
 
     @EventBusSubscriber(modid = JetsonMod.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ModBus {
+        @SubscribeEvent
+        public static void registerKeys(RegisterKeyMappingsEvent event) {
+            event.register(EXIT_KEY);
+        }
+
         @SubscribeEvent
         public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
             event.registerEntityRenderer(JetsonMod.JETSON_ENTITY.get(), JetsonRenderer::new);
@@ -56,6 +69,15 @@ public class ClientEvents {
                         !inGui && o.keyRight.isDown(),
                         !inGui && o.keyJump.isDown(),
                         !inGui && o.keyShift.isDown());
+            }
+            while (EXIT_KEY.consumeClick()) {
+                if (mc.player != null && mc.player.getVehicle() instanceof JetsonEntity jetson) {
+                    if (jetson.isLanded()) {
+                        PacketDistributor.sendToServer(ExitPayload.INSTANCE);
+                    } else {
+                        mc.player.displayClientMessage(Component.translatable("hud.jetsonmod.land_first"), true);
+                    }
+                }
             }
         }
     }

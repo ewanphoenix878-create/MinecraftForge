@@ -8,8 +8,8 @@ import net.minecraftforge.event.entity.EntityMountEvent;
 @Mod.EventBusSubscriber(modid = JetsonMod.MODID)
 public class CommonEvents {
     /**
-     * Shift is the "descend" key while flying, so only let the pilot climb out with Shift
-     * once the aircraft has landed.
+     * Shift is the "descend" key, so it never lets the pilot out; the exit key (R) does that
+     * through {@link JetsonEntity#handleExitRequest}.
      */
     @SubscribeEvent
     public static void onDismount(EntityMountEvent event) {
@@ -19,7 +19,7 @@ public class CommonEvents {
                 && event.getEntityMounting() instanceof Player player
                 && player.isAlive()
                 && player.isShiftKeyDown()
-                && !jetson.isLanded()) {
+                && !jetson.isExitRequested()) {
             event.setCanceled(true);
         }
     }

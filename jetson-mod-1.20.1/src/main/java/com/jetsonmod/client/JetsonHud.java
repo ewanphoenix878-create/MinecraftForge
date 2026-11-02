@@ -36,6 +36,12 @@ public final class JetsonHud {
         graphics.fill(x, y, x + WIDTH, y + 8, 0xFF202020);
         graphics.fill(x + 1, y + 1, x + 1 + (int) ((WIDTH - 2) * fill), y + 7, color);
 
+        if (jetson.isLanded()) {
+            Component hint = Component.translatable("hud.jetsonmod.exit", ClientEvents.EXIT_KEY.getTranslatedKeyMessage());
+            graphics.fill(x - 2, y + 10, x + mc.font.width(hint) + 2, y + 21, 0x90000000);
+            graphics.drawString(mc.font, hint, x, y + 12, 0xFFFFFF);
+        }
+
         ItemStack reserve = jetson.getFuelStack();
         if (!reserve.isEmpty()) {
             graphics.renderItem(reserve, x + WIDTH + 4, y - 9);
