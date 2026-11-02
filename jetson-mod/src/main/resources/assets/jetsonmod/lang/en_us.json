@@ -7,5 +7,7 @@
   "hud.jetsonmod.exit": "Land and press %s to exit",
   "hud.jetsonmod.land_first": "Land first to get out",
   "key.jetsonmod.exit": "Exit flying toilet",
-  "key.categories.jetsonmod": "Jetson Aircraft"
+  "key.categories.jetsonmod": "Jetson Aircraft",
+  "subtitles.jetsonmod.rotor": "Toilet rotor whirs",
+  "subtitles.jetsonmod.flush": "Toilet flushes"
 }

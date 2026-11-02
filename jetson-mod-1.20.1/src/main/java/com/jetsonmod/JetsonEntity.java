@@ -6,6 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -269,6 +270,11 @@ public class JetsonEntity extends Entity implements HasCustomInventoryScreen {
         this.lerpSteps = 10;
     }
 
+    /** 0..1 how fast the rotor is turning (client side). */
+    public float getPropSpeed() {
+        return propSpeed;
+    }
+
     public float getPropAngle(float partialTick) {
         return Mth.lerp(partialTick, prevPropAngle, propAngle);
     }
@@ -298,7 +304,11 @@ public class JetsonEntity extends Entity implements HasCustomInventoryScreen {
             return InteractionResult.PASS;
         }
         if (!level().isClientSide) {
-            return player.startRiding(this) ? InteractionResult.CONSUME : InteractionResult.PASS;
+            if (player.startRiding(this)) {
+                level().playSound(null, getX(), getY(), getZ(), JetsonMod.FLUSH_SOUND.get(), SoundSource.NEUTRAL, 1.0F, 1.0F);
+                return InteractionResult.CONSUME;
+            }
+            return InteractionResult.PASS;
         }
         return InteractionResult.SUCCESS;
     }

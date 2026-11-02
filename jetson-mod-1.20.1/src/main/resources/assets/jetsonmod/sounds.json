@@ -1,0 +1,10 @@
+{
+  "rotor": {
+    "sounds": [ { "name": "jetsonmod:rotor" } ],
+    "subtitle": "subtitles.jetsonmod.rotor"
+  },
+  "flush": {
+    "sounds": [ { "name": "jetsonmod:flush" } ],
+    "subtitle": "subtitles.jetsonmod.flush"
+  }
+}

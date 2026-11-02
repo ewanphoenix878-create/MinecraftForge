@@ -18,6 +18,7 @@ import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class ClientEvents {
@@ -55,6 +56,14 @@ public class ClientEvents {
 
     @EventBusSubscriber(modid = JetsonMod.MODID, value = Dist.CLIENT)
     public static class GameBus {
+        /** Start the rotor loop for every toilet that appears on this client. */
+        @SubscribeEvent
+        public static void onEntityJoin(EntityJoinLevelEvent event) {
+            if (event.getLevel().isClientSide() && event.getEntity() instanceof JetsonEntity jetson) {
+                Minecraft.getInstance().getSoundManager().play(new RotorSoundInstance(jetson));
+            }
+        }
+
         /** Feed the pilot's keys to the aircraft before it ticks. */
         @SubscribeEvent
         public static void onClientTick(ClientTickEvent.Pre event) {

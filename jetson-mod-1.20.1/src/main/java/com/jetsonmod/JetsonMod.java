@@ -1,5 +1,7 @@
 package com.jetsonmod;
 
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.flag.FeatureFlags;
@@ -21,6 +23,12 @@ public class JetsonMod {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MODID);
     public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MODID);
+    public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MODID);
+
+    public static final RegistryObject<SoundEvent> ROTOR_SOUND = SOUNDS.register("rotor",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(MODID, "rotor")));
+    public static final RegistryObject<SoundEvent> FLUSH_SOUND = SOUNDS.register("flush",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(MODID, "flush")));
 
     public static final RegistryObject<EntityType<JetsonEntity>> JETSON_ENTITY = ENTITY_TYPES.register("jetson",
             () -> EntityType.Builder.<JetsonEntity>of(JetsonEntity::new, MobCategory.MISC)
@@ -39,6 +47,7 @@ public class JetsonMod {
         ITEMS.register(modBus);
         ENTITY_TYPES.register(modBus);
         MENUS.register(modBus);
+        SOUNDS.register(modBus);
         modBus.addListener(this::addCreative);
         JetsonNetwork.register();
     }

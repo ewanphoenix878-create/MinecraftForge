@@ -15,6 +15,7 @@ import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -54,6 +55,14 @@ public class ClientEvents {
 
     @Mod.EventBusSubscriber(modid = JetsonMod.MODID, value = Dist.CLIENT)
     public static class GameBus {
+        /** Start the rotor loop for every toilet that appears on this client. */
+        @SubscribeEvent
+        public static void onEntityJoin(EntityJoinLevelEvent event) {
+            if (event.getLevel().isClientSide() && event.getEntity() instanceof JetsonEntity jetson) {
+                Minecraft.getInstance().getSoundManager().play(new RotorSoundInstance(jetson));
+            }
+        }
+
         /** Feed the pilot's keys to the aircraft before it ticks. */
         @SubscribeEvent
         public static void onClientTick(TickEvent.ClientTickEvent event) {
